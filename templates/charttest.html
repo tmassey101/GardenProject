@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+
+  <script src="{{ url_for('static', filename='index.js') }}"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='stylesheet.css') }}">
+</head>
+
+<body>
+  
+    <div class="wrapper">
+        <h1>Title</h1>
+        <h2>Description</h2>      
+      </div>
+
+      <div width=>
+          <canvas id="myChart" width="800" height="400"></canvas>
+      </div>
+  
+      <!--<script src="{{ url_for('static', filename='script.js') }}"></script>-->
+      <script>
+
+        var labels = {{labels  | safe }};
+        var values = {{values}};
+       
+        var plotData = [];
+        for (var i=0; i < values.length; i++) {
+          plotData.push({'x': labels[i], 'y': values[i]});
+        }        
+        console.log(plotData)
+
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels : {{labels | safe }},
+            datasets: [
+              { 
+              data: plotData,
+                    //africa, 
+                    //{{values}}
+              label: "Temperature",
+              borderColor: "#2980B9",
+              fill: false
+            }/*
+            ,
+            { 
+              data: asia,
+              label: "Asia",
+              borderColor: "#C0392B",
+              fill: false
+            }*/
+            ]
+          },
+          options: {
+            responsive: true,
+            title:      {
+                display: true,
+                text:    "Chart.js Time Scale"
+            },
+            scales:     {
+                xAxes: [{
+                    type:       "time",
+                    time:       {
+                
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:     true,
+                        labelString: 'Date'
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display:     true,
+                        labelString: 'value'
+                    }
+                }]
+            }
+          }
+        });
+
+      </script>
+</body>
+</html>
