@@ -46,7 +46,7 @@ def insert(value):
 @app.route("/results", methods=["GET", "POST"])
 def results():
 
-    data = db.execute("SELECT * FROM sensorinputs LIMIT 50").fetchmany(50)
+    data = db.execute("SELECT * FROM sensorinputs WHERE created > current_timestamp - (60 * interval '1 minute') LIMIT 50").fetchmany(50)
 
     return render_template('results.html', data = data)
 
@@ -60,7 +60,7 @@ def raw():
 @app.route("/charttest", methods=["GET", "POST"])
 def charttest():
 
-    data = db.execute("SELECT id, value, created FROM sensorinputs LIMIT 50").fetchall()
+    data = db.execute("SELECT id, value, created FROM sensorinputs WHERE created > current_timestamp - (60 * interval '1 minute') ORDER BY created ASC").fetchall()
 
     values = []
     id = []
