@@ -46,7 +46,7 @@ def insert(value):
 @app.route("/results", methods=["GET", "POST"])
 def results():
 
-    data = db.execute("SELECT * FROM sensorinputs WHERE created > current_timestamp - (60 * interval '1 minute') LIMIT 50").fetchmany(50)
+    data = db.execute("SELECT * FROM sensorinputs WHERE created > current_timestamp - (60 * interval '1 minute') LIMIT 50 ORDER BY created DESC").fetchmany(50)
 
     return render_template('results.html', data = data)
 
