@@ -57,10 +57,34 @@ def raw():
 
     return str(data)
 
-@app.route("/charttest", methods=["GET", "POST"])
-def charttest():
+@app.route("/charttest/", methods=["GET", "POST"])
+def hourlyChart():
 
+    title = "Hourly Chart"
+    chartType = "'line'"
     data = db.execute("SELECT id, value, created FROM sensorinputs WHERE created >= NOW() - INTERVAL '60 minutes' ORDER BY created ASC;").fetchall()
+
+    
+    values = []
+    id = []
+    labels = []
+
+    for i in data:
+        id.append(int(i[0]))
+        values.append(float(i[1]))
+        labels.append(i[2].strftime("%c"))
+
+    print(type(id), type(values), type(labels))
+    
+
+    return render_template('charttest.html', labels=labels, values=values, title=title, chartType=chartType)
+
+@app.route("/charttest/daily", methods=["GET", "POST"])
+def dailyChart():
+
+    title = "Daily Chart"
+    chartType = "'line'"
+    data = db.execute("SELECT id, value, created FROM sensorinputs WHERE created >= NOW() - INTERVAL '24 hours' ORDER BY created ASC;").fetchall()
 
     values = []
     id = []
@@ -77,4 +101,28 @@ def charttest():
     print(labels[2])
     
 
-    return render_template('charttest.html', data = data, id=id, labels=labels, values=values)
+    return render_template('charttest.html', labels=labels, values=values, chartType=chartType)
+
+@app.route("/charttest/dailyByHr", methods=["GET", "POST"])
+def dailyChartByHr():
+
+    title = "By Hour Chart"
+    chartType = "'line'"
+    data = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, date_trunc('hour', created - interval '1 minutes')  + interval '1 hours' as interv_end, avg(value) from sensorinputs where created >= NOW() - INTERVAL '24 hours' group by date_trunc('hour', created - interval '1 minutes') order by interv_start;").fetchall()
+
+    values = []
+    id = []
+    labels = []
+
+    for i in data:
+
+        values.append(float(i[2]))
+        labels.append(i[1].strftime("%c"))
+
+    print(type(id), type(values), type(labels))
+   
+    print(values[2])
+    print(labels[2])
+    
+
+    return render_template('charttest.html', labels=labels, values=values, chartType=chartType)

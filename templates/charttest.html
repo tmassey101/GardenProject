@@ -23,10 +23,10 @@
           <canvas id="myChart" width="800" height="400"></canvas>
       </div>
   
-      <!--<script src="{{ url_for('static', filename='script.js') }}"></script>-->
+      
       <script>
 
-        var labels = {{labels  | safe }};
+        var labels = {{ labels  | safe }};
         var values = {{values}};
        
         var plotData = [];
@@ -37,9 +37,9 @@
 
         var ctx = document.getElementById("myChart");
         var myChart = new Chart(ctx, {
-          type: 'line',
+          type: {{ chartType | safe }},
           data: {
-            labels : {{labels | safe }},
+            labels : {{ labels | safe }},
             datasets: [
               { 
               data: plotData,
@@ -62,7 +62,7 @@
           },
           options: {
             responsive: true,
-            spanGaps: true,
+            
             title:      {
                 display: true,
                 text:    "Chart.js Time Scale"

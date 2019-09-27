@@ -12,11 +12,19 @@
 
     <section class="content">
     <header>
-        {% block header %}{% endblock %}
+        {% block header %}Home Page Header{% endblock %}
     </header>
+    <a href="../">Home</a>
+    <a href="../results">Results Page</a>
+    <a href="../charttest">Last Hour</a>
+    <a href="../charttest/daily">Daily Chart</a>
+    <a href="../charttest/dailyByHr">Summary by Hour</a>
+
     {% for message in get_flashed_messages() %}
         <div class="flash">{{ message }}</div>
     {% endfor %}
     {% block content %}{% endblock %}
     </section>
+
+
 </body>
