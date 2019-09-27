@@ -1,40 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>{{ title }}</title>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
-</head>
+{% extends 'layout.html' %}
 
-<body>
+{% block title %}
+
+  Garden Results
   
-    <h1>Results</h1>
+{% endblock %}
 
+{% block header %}
+
+  <h1>This is a header</h1>
+
+{% endblock %}
+
+
+{% block content %}
+  
+        <h1>Results</h1>
     
+        
+    
+      <!-- Display data table summary of selected data -->
+            <table>
+                <tr>
+                    <th>Entry ID</th>
+                    <th>Device ID</th>
+                    <th>Sensor ID</th>
+                    <th>Measure Type</th>
+                    <th>Value</th>
+                    <th>Created Date/Time</th>
+                </tr>
+                {% for item in data %}
+                
+                <tr></tr>
+                    <td>{{item.id}}</td>
+                    <td>{{item.deviceid}}</td>
+                    <td>{{item.sensorid}}</td>
+                    <td>{{item.measuretype}}</td>
+                    <td>{{item.value}}</td>
+                    <td>{{item.created}}</td>
+                </tr>
+                {% endfor %}
+    
+            </table>
 
-  <!-- Display data table summary of selected data -->
-        <table>
-            <tr>
-                <th>Entry ID</th>
-                <th>Device ID</th>
-                <th>Sensor ID</th>
-                <th>Measure Type</th>
-                <th>Value</th>
-                <th>Created Date/Time</th>
-            </tr>
-            {% for item in data %}
-            
-            <tr></tr>
-                <td>{{item.id}}</td>
-                <td>{{item.deviceid}}</td>
-                <td>{{item.sensorid}}</td>
-                <td>{{item.measuretype}}</td>
-                <td>{{item.value}}</td>
-                <td>{{item.created}}</td>
-            </tr>
-            {% endfor %}
+{% endblock %}
 
-        </table>
-   
-</body>
-</html>
