@@ -130,8 +130,8 @@ def dailyChartByHr():
 
 @app.route("/insertall/<deviceid>/<sensorid>/<measuretype>/<value>", methods=["GET", "POST"])
 def insertall(deviceid, sensorid, measuretype, value):
-    
-    query = f"INSERT INTO sensorinputs (deviceid, sensorid, created, value, measuretype) VALUES ({deviceid}, {sensorid}, now(), {value}, {measuretype});"
+
+    query = f"INSERT INTO sensorinputs (deviceid, sensorid, created, value, measuretype) VALUES ({deviceid}, {sensorid}, now(), {value}, '{measuretype}');"
     insert = db.execute(query)
     db.commit()
 
