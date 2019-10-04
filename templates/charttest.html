@@ -28,12 +28,29 @@
 
         var labels = {{ labels  | safe }};
         var values = {{values}};
-       
+        var measuretype = {{measuretype | safe}};
+        
+        
+        console.log(values[2])
+        console.log(labels[2])
+        console.log(measuretype[2])
+        console.log(typeof(measuretype[2]))
+
         var plotData = [];
+        var plotTemp = [];
+        var plotMoisture = [];
+
         for (var i=0; i < values.length; i++) {
-          plotData.push({'x': labels[i], 'y': values[i]});
+          var mtype = measuretype[i];
+          if (mtype.startsWith("temp")){
+            plotData.push({'x': labels[i], 'y': values[i]});
+          }
+          else if (mtype.startsWith("moisture")){
+            plotMoisture.push({'x': labels[i], 'y': values[i]});
+          }
         }        
         console.log(plotData)
+        console.log(plotMoisture)
 
         var ctx = document.getElementById("myChart");
         var myChart = new Chart(ctx, {
@@ -43,21 +60,20 @@
             datasets: [
               { 
               data: plotData,
-                    //africa, 
-                    //{{values}}
               label: "Temperature",
               borderColor: "#2980B9",
               fill: false,
               lineTension: 0
             
-            }/*
+            }
             ,
             { 
-              data: asia,
-              label: "Asia",
-              borderColor: "#C0392B",
-              fill: false
-            }*/
+              data: plotMoisture,
+              label: "Moisture",
+              borderColor: "#111111",
+              fill: false,
+              lineTension: 0
+            }
             ]
           },
           options: {

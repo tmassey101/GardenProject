@@ -63,46 +63,55 @@ def hourlyChart():
 
     title = "Hourly Chart"
     chartType = "'line'"
-    data = db.execute("SELECT id, value, created FROM sensorinputs WHERE created >= NOW() - INTERVAL '60 minutes' ORDER BY created ASC;").fetchall()
+    data = db.execute("SELECT id, value, created, measuretype FROM sensorinputs WHERE created >= NOW() - INTERVAL '60 minutes' ORDER BY created ASC;").fetchall()
 
     
     values = []
     id = []
     labels = []
+    measuretype = []
 
     for i in data:
         id.append(int(i[0]))
         values.append(float(i[1]))
         labels.append(i[2].strftime("%c"))
+        measuretype.append(str(i[3]))
 
-    print(type(id), type(values), type(labels))
+    print(type(id), type(values), type(labels), type(measuretype))
+    print(id[2])
+    print(values[2])
+    print(labels[2])
+    print(measuretype[2])
     
 
-    return render_template('charttest.html', labels=labels, values=values, title=title, chartType=chartType)
+    return render_template('charttest.html', labels=labels, values=values, measuretype=measuretype, chartType=chartType)
 
 @app.route("/charttest/daily", methods=["GET", "POST"])
 def dailyChart():
 
     title = "Daily Chart"
     chartType = "'line'"
-    data = db.execute("SELECT id, value, created FROM sensorinputs WHERE created >= NOW() - INTERVAL '24 hours' ORDER BY created ASC;").fetchall()
+    data = db.execute("SELECT id, value, created, measuretype FROM sensorinputs WHERE created >= NOW() - INTERVAL '24 hours' ORDER BY created ASC;").fetchall()
 
     values = []
     id = []
     labels = []
+    measuretype = []
 
     for i in data:
         id.append(int(i[0]))
         values.append(float(i[1]))
         labels.append(i[2].strftime("%c"))
+        measuretype.append(str(i[3]))
 
-    print(type(id), type(values), type(labels))
+    print(type(id), type(values), type(labels), type(measuretype))
     print(id[2])
     print(values[2])
     print(labels[2])
+    print(measuretype[2])
     
 
-    return render_template('charttest.html', labels=labels, values=values, chartType=chartType)
+    return render_template('charttest.html', labels=labels, values=values, measuretype=measuretype, chartType=chartType)
 
 @app.route("/charttest/dailyByHr", methods=["GET", "POST"])
 def dailyChartByHr():
