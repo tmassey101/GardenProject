@@ -128,7 +128,7 @@ def dailyChartByHr():
 
     return render_template('charttest.html', labels=labels, values=values, chartType=chartType)
 
-@app.route("/insert/<deviceid>/<sensorid>/<measuretype>/<value>", methods=["GET", "POST"])
+@app.route("/insertall/<deviceid>/<sensorid>/<measuretype>/<value>", methods=["GET", "POST"])
 def insertall(deviceid, sensorid, measuretype, value):
     
     query = f"INSERT INTO sensorinputs (deviceid, sensorid, created, value, measuretype) VALUES ({deviceid}, {sensorid}, now(), {value}, {measuretype});"

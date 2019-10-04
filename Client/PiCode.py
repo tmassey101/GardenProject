@@ -18,11 +18,14 @@ ss = Seesaw(i2c_bus, addr=0x36)
 #setup time loop
 i = 0
 
+#params
+deviceid = 1
+
 while(True):
     
     
     # read moisture level through capacitive touch pad
-    touch = ss.moisture_read()
+    moisture = ss.moisture_read()
 
     # read temperature from the temperature sensor
     temp = ss.get_temp()
@@ -32,18 +35,27 @@ while(True):
     #value = 21 + random.randint(1,2) + random.randint(1,10)/10
     #print("value to insert: "+str(value))
     
-    value = temp
     
-    #send a request
+    #send a temp request
     url = "https://garden-project.herokuapp.com/insert/"
-    r = requests.post(url+str(value))
+    msg = url+str(deviceid)+'/1/"temp"/'+str(temp)
+    r = requests.post(msg)
 
     #Log message:
-    message = "Sent POST request to "+str(url)+" with value: "+str(value)
+    message = "Sent POST request to: "+msg
     print(message)
+
+    #send a moisture request
+    url = "https://garden-project.herokuapp.com/insert/"
+    msg = url+str(deviceid)+'/2/"moisture"/'+str(moisture)
+    r = requests.post(msg)
+
+    #Log message:
+    message = "Sent POST request to: "+msg
+    print(message)
+
 
     #wait for a minute before looping
     i += 1
     time.sleep(2)
 
-print("Aren't you bored?")
