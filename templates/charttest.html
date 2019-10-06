@@ -53,6 +53,7 @@
         console.log(plotMoisture)
 
         var ctx = document.getElementById("myChart");
+
         var myChart = new Chart(ctx, {
           type: {{ chartType | safe }},
           data: {
@@ -63,16 +64,18 @@
               label: "Temperature",
               borderColor: "#2980B9",
               fill: false,
+              yAxisID: '1',
               lineTension: 0
-            
-            }
-            ,
-            { 
+              }
+              ,
+              { 
               data: plotMoisture,
               label: "Moisture",
               borderColor: "#111111",
               fill: false,
+              yAxisID: '2',
               lineTension: 0
+              
             }
             ]
           },
@@ -94,18 +97,26 @@
                         display:     true,
                         labelString: 'Time'
                     }
-                }],
-                yAxes: [{
-                    scaleLabel: {
-                        display:     true,
-                        labelString: 'value'
-                    }
                 }]
+                ,
+                yAxes: [{
+                display: true,
+                labelString: 'Temperature',
+                id: '1',
+                type: 'linear',
+                position: 'left'
+                }, {
+                display: true,
+                labelString: 'Moisture',
+                id: '2',
+                type: 'linear',
+                position: 'right'
+                }]
+              }
+
+
             }
-
-
-          }
-        });
+          });
 
       </script>
 
