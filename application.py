@@ -84,7 +84,7 @@ def hourlyChart():
     print(measuretype[2])
     
 
-    return render_template('charttest.html', labels=labels, values=values, measuretype=measuretype, chartType=chartType)
+    return render_template('charttest.html', labels=labels, values=values, measuretype=measuretype, chartType=chartType, title=title)
 
 @app.route("/charttest/daily", methods=["GET", "POST"])
 def dailyChart():
@@ -111,12 +111,12 @@ def dailyChart():
     print(measuretype[2])
     
 
-    return render_template('charttest.html', labels=labels, values=values, measuretype=measuretype, chartType=chartType)
+    return render_template('charttest.html', labels=labels, values=values, measuretype=measuretype, chartType=chartType, title=title)
 
 @app.route("/charttest/dailyByHr", methods=["GET", "POST"])
 def dailyChartByHr():
 
-    title = "By Hour Chart"
+    title = "Hourly Average Chart"
     chartType = "'line'"
     data = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, date_trunc('hour', created - interval '1 minutes')  + interval '1 hours' as interv_end, avg(value) as avgvalue, measuretype from sensorinputs where created >= NOW() - INTERVAL '24 hours' group by measuretype, date_trunc('hour', created - interval '1 minutes') order by interv_start").fetchall()
 
@@ -138,7 +138,7 @@ def dailyChartByHr():
     print(measuretype[2])
     
 
-    return render_template('charttest.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype)
+    return render_template('charttest.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype, title=title)
 
 @app.route("/insertall/<deviceid>/<sensorid>/<measuretype>/<value>", methods=["GET", "POST"])
 def insertall(deviceid, sensorid, measuretype, value):

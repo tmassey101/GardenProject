@@ -1,26 +1,18 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-
   Garden - Chart Test
-  
-{% endblock %}
-
-{% block header %}
-
-  <h1>This is a header</h1>
-
 {% endblock %}
 
 
 {% block content %}
   
     <div class="wrapper">
-        <h1>Title</h1>
-        <h2>Description</h2>      
+        <h1>{{Title}}</h1>
+        <h2></h2>      
       </div>
-      <div class="chart-container" style="position: relative; height:40vh; width:80vw">
-          <canvas id="myChart" width="800" height="400"></canvas>
+      <div class="chart-container" style="position: relative; width:80vw">
+          <canvas id="myChart"></canvas>
       </div>
   
       

@@ -4,22 +4,20 @@
 <head>
     <title>{% block title %}{% endblock %}</title>
     
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='stylesheet.css') }}">
+    
     <script src="{{ url_for('static', filename='index.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='bootstrap.min.css') }}">
-</head>>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='stylesheet.css') }}">
+</head>
     
 <body>
-
-{% block header %}{% endblock %}    
-        
 {% block navbar %}
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <!-- Brand/logo -->
-    <a class="navbar-brand" href="#">Logo</a>
+    <a class="navbar-brand" href="../"><img src="../static/images/leaflogo.jpg" alt="Leaf Logo" width="50" height="50"></a>
     
     <!-- Links -->
     <ul class="navbar-nav">
@@ -42,8 +40,22 @@
 </nav>
 
 {% endblock %}
+
+{% block header %}
+<div class="container">
+    <div class="header-bar">
+            <h1>Tim's Garden Project</h1>
+    </div>
+</div>
+
+
+{% endblock %}
+
+<div class="container">
     
 {% block content %}{% endblock %}
+
+</div>
 
 </body>
 </html>
