@@ -21,7 +21,7 @@
         var labels = {{ labels  | safe }};
         var values = {{values}};
         var measuretype = {{measuretype | safe}};
-        
+        var timeFormat = 'DD/MM/YYYY HH:mm';
         
         console.log(values[2])
         console.log(labels[2])
@@ -54,16 +54,18 @@
               { 
               data: plotData,
               label: "Temperature",
-              borderColor: "#2980B9",
+              labelString: "Temperature",
+              borderColor: "#FE631F",
               fill: false,
               yAxisID: '1',
-              lineTension: 0
+              lineTension: 0,
               }
               ,
               { 
               data: plotMoisture,
               label: "Moisture",
-              borderColor: "#111111",
+              labelString: "Soil Moisture Content",
+              borderColor: "#0C5DC4",
               fill: false,
               yAxisID: '2',
               lineTension: 0
@@ -81,10 +83,7 @@
             scales:     {
                 xAxes: [{
                     type:       "time",
-                    time:       {
-                
-                        tooltipFormat: 'll'
-                    },
+                    
                     scaleLabel: {
                         display:     true,
                         labelString: 'Time'
@@ -92,14 +91,19 @@
                 }]
                 ,
                 yAxes: [{
-                display: true,
-                labelString: 'Temperature',
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Temperature °C'
+                },
                 id: '1',
                 type: 'linear',
-                position: 'left'
+                position: 'left',
+                beginAtZero: true
                 }, {
-                display: true,
-                labelString: 'Moisture',
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Moisture Content'
+                },
                 id: '2',
                 type: 'linear',
                 position: 'right'
