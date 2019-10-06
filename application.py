@@ -118,24 +118,27 @@ def dailyChartByHr():
 
     title = "By Hour Chart"
     chartType = "'line'"
-    data = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, date_trunc('hour', created - interval '1 minutes')  + interval '1 hours' as interv_end, avg(value) from sensorinputs where created >= NOW() - INTERVAL '24 hours' group by date_trunc('hour', created - interval '1 minutes') order by interv_start;").fetchall()
+    data = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, date_trunc('hour', created - interval '1 minutes')  + interval '1 hours' as interv_end, avg(value) as avgvalue, measuretype from sensorinputs where created >= NOW() - INTERVAL '24 hours' group by measuretype, date_trunc('hour', created - interval '1 minutes') order by interv_start").fetchall()
 
     values = []
     id = []
     labels = []
+    measuretype = []
 
     for i in data:
 
         values.append(float(i[2]))
         labels.append(i[1].strftime("%c"))
+        measuretype.append(str(i[3]))
 
     print(type(id), type(values), type(labels))
    
     print(values[2])
     print(labels[2])
+    print(measuretype[2])
     
 
-    return render_template('charttest.html', labels=labels, values=values, chartType=chartType)
+    return render_template('charttest.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype)
 
 @app.route("/insertall/<deviceid>/<sensorid>/<measuretype>/<value>", methods=["GET", "POST"])
 def insertall(deviceid, sensorid, measuretype, value):
