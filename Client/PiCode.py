@@ -39,7 +39,7 @@ while(True):
     
     #send a temp request
     url = "https://garden-project.herokuapp.com/insertall/"
-    msg = url+str(deviceid)+'/1/"temp"/'+str(temp)
+    msg = url+str(deviceid)+'/1/'temp'/'+str(temp)
     r = requests.post(msg)
 
     #Log message:

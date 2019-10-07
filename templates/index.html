@@ -17,16 +17,165 @@
 <div class="container">
   <div class="row">
   
-    <div class="col-sm-12 col-lg-6"> Summary of most recent readings</div>
-    <div class="col-sm-6 col-lg-3">Don't know what can go here</div>
-    <div class="col-sm-6 col-lg-3"> Maybe a weather report?</div>
-  </div>
+    <div class="col-sm-12 col-lg-6">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6 col-lg-6">
+            <h5>Last Hour Average Temperature:</h5>  
+            <div class="metric">
+              <h1>22.2</h1>
+            </div>
+            <br>
+            <h5>Last Hour Average Moisture Content:</h5>
+            <div class="metric">
+              <h1>627</h1>
+            </div>
+            <br>
+            <h5>Next required watering:</h5>
+            <div class="metric">
+              <h1>3.2</h1>
+              <p>days</p>
+            </div>
+          </div>
+            
+          <div class="col-6 col-lg-6"> 
+              <a class="weatherwidget-io" href="https://forecast7.com/en/51d75n1d26/oxford/" data-label_1="OXFORD" data-days="3" data-theme="pure" >OXFORD</a>
+              <script>
+              !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+              </script>
+          </div>
 
-  <div class="row">
-    <div class="col-sm-12 col-lg-12"> I'm going to put my chart in here. </div>
-    
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6"> 
+        <div class="col-sm-12 col-lg-12"> Room for a picture here </div>
+    </div>
   </div>
-</div>
+      
+  
+    <div class="row">
+        <div class="chart-container" style="position: relative; width:100%">
+            <canvas id="myChart"></canvas>
+        </div>
+     
+      
+    </div>
+  </div>
+    
+    <script>
+
+      var labels = {{ labels  | safe }};
+      var values = {{values}};
+      var measuretype = {{measuretype | safe}};
+      var timeFormat = 'DD/MM/YYYY HH:mm';
+      
+      console.log(values[2])
+      console.log(labels[2])
+      console.log(measuretype[2])
+      console.log(typeof(measuretype[2]))
+
+      var plotData = [];
+      var plotTemp = [];
+      var plotMoisture = [];
+
+      for (var i=0; i < values.length; i++) {
+        var mtype = measuretype[i];
+        if (mtype.startsWith("temp")){
+          plotData.push({'x': labels[i], 'y': values[i]});
+        }
+        else if (mtype.startsWith("moisture")){
+          plotMoisture.push({'x': labels[i], 'y': values[i]});
+        }
+      }        
+      console.log(plotData)
+      console.log(plotMoisture)
+
+      var ctx = document.getElementById("myChart");
+
+      var myChart = new Chart(ctx, {
+        type: {{ chartType | safe }},
+        data: {
+          labels : {{ labels | safe }},
+          datasets: [
+            { 
+            data: plotData,
+            label: "Temperature",
+            labelString: "Temperature",
+            borderColor: "#FE631F",
+            fill: false,
+            yAxisID: '1',
+            lineTension: 0,
+            }
+            ,
+            { 
+            data: plotMoisture,
+            label: "Moisture",
+            labelString: "Soil Moisture Content",
+            borderColor: "#0C5DC4",
+            fill: false,
+            yAxisID: '2',
+            lineTension: 0
+            
+          }
+          ]
+        },
+        options: {
+          responsive: true,
+          
+          title:      {
+              display: true,
+              text:    "Chart.js Time Scale"
+          },
+          scales:     {
+              xAxes: [{
+                  type:       "time",
+                  
+                  scaleLabel: {
+                      display:     true,
+                      labelString: 'Time'
+                  }
+              }]
+              ,
+              yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Temperature °C'
+              },
+              id: '1',
+              type: 'linear',
+              position: 'left',
+              beginAtZero: true
+              }, {
+              scaleLabel: {
+                display: true,
+                labelString: 'Moisture Content'
+              },
+              id: '2',
+              type: 'linear',
+              position: 'right'
+              }]
+            },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem, data) {
+                  var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                  if (label) {
+                      label += ': ';
+                  }
+                  label += Math.round(tooltipItem.yLabel * 100) / 100;
+                  return label;
+              }
+            }
+          }
+
+
+          }
+        });
+
+    </script>
+  
 
 
 {% endblock %}
