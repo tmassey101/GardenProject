@@ -11,7 +11,7 @@ th {
   color: white;
 }
 
-.header-bar {
+#header-bar {
   color: #672A00
 }
 
@@ -42,8 +42,7 @@ canvas{
   padding-right: 25px;
 }
 
-/*
+
 div{
   border-style: solid
 }
-*/

@@ -140,6 +140,33 @@ def dailyChartByHr():
 
     return render_template('charttest.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype, title=title)
 
+@app.route("/charttest/dailyBy3d", methods=["GET", "POST"])
+def dailyChartBy3d():
+
+    title = "Hourly Average Chart"
+    chartType = "'line'"
+    data = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, date_trunc('hour', created - interval '1 minutes')  + interval '1 hours' as interv_end, avg(value) as avgvalue, measuretype from sensorinputs where created >= NOW() - INTERVAL '62 hours' group by measuretype, date_trunc('hour', created - interval '1 minutes') order by interv_start").fetchall()
+
+    values = []
+    id = []
+    labels = []
+    measuretype = []
+
+    for i in data:
+
+        values.append(float(i[2]))
+        labels.append(i[1].strftime("%c"))
+        measuretype.append(str(i[3]))
+
+    print(type(id), type(values), type(labels))
+   
+    print(values[2])
+    print(labels[2])
+    print(measuretype[2])
+    
+
+    return render_template('charttest.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype, title=title)
+
 @app.route("/insertall/<deviceid>/<sensorid>/<measuretype>/<value>", methods=["GET", "POST"])
 def insertall(deviceid, sensorid, measuretype, value):
 
