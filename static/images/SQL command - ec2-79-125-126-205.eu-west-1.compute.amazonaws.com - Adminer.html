@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!-- saved from url=(0353)https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&username=expoaonwdomdgr&db=d8imtor2usqnea&ns=public&sql=select%20avg(value)%20as%20avgvalue%2C%20measuretype%20%0Afrom%20sensorinputs%0AWHERE%20created%20%3E%3D%20NOW()%20-%20INTERVAL%20%2760%20minutes%27%0AGROUP%20BY%20measuretype%0AORDER%20BY%20measuretype%3B%0A%0A%0A -->
+<html lang="en" dir="ltr" spellcheck="false"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="robots" content="noindex">
+<title>SQL command - ec2-79-125-126-205.eu-west-1.compute.amazonaws.com - Adminer</title>
+<link rel="stylesheet" type="text/css" href="./SQL command - ec2-79-125-126-205.eu-west-1.compute.amazonaws.com - Adminer_files/saved_resource">
+<script src="./SQL command - ec2-79-125-126-205.eu-west-1.compute.amazonaws.com - Adminer_files/saved_resource(1)" nonce=""></script>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+        <link rel="icon" type="image/ico" href="https://adminer.cs50.net/images/favicon.png">
+
+                    <meta name="application-name" content="Adminer">
+            <meta name="msapplication-TileColor" content="#ffffff">
+            <meta name="msapplication-square150x150logo" content="images/tileIcon.png">
+            <meta name="msapplication-wide310x150logo" content="images/tileIcon-wide.png">
+
+        
+        <link rel="stylesheet" type="text/css" href="./SQL command - ec2-79-125-126-205.eu-west-1.compute.amazonaws.com - Adminer_files/default-blue.css">
+
+        <script nonce="">
+            (function(document) {
+                "use strict";
+
+                document.addEventListener("DOMContentLoaded", init, false);
+
+                function init() {
+                    var menu = document.getElementById("menu");
+                    var button = menu.getElementsByTagName("h1")[0];
+                    if (!menu || !button) {
+                        return;
+                    }
+
+                    button.addEventListener("click", function() {
+                        if (menu.className.indexOf(" open") >= 0) {
+                            menu.className = menu.className.replace(/ *open/, "");
+                        } else {
+                            menu.className += " open";
+                        }
+                    }, false);
+                }
+
+            })(document);
+
+        </script>
+
+        
+</head><body class="ltr js">
+<script nonce="">
+mixin(document.body, {onkeydown: bodyKeydown, onclick: bodyClick});
+document.body.className = document.body.className.replace(/ nojs/, ' js');
+var offlineMessage = 'You are offline.';
+var thousandsSeparator = ',';
+</script>
+
+<div id="help" class="jush-pgsql jsonly hidden"></div>
+<script nonce="">mixin(qs('#help'), {onmouseover: function () { helpOpen = 1; }, onmouseout: helpMouseout});</script>
+
+<div id="content">
+<p id="breadcrumb"><a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com">PostgreSQL</a> » <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr" accesskey="1" title="Alt+Shift+1">ec2-79-125-126-205.eu-west-1.compute.amazonaws.com</a> » <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=">d8imtor2usqnea</a> » <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public">public</a> » SQL command
+</p><h2>SQL command</h2>
+<div id="ajaxstatus" class="jsonly hidden"></div>
+<pre id="sql-1"><code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue, measuretype <br>from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a><br>WHERE created &gt;= <a href="https://www.postgresql.org/docs/11/static/functions-datetime.html" class="jush-help" target="_blank" rel="noreferrer noopener">NOW</a>() - INTERVAL <span class="jush-sql_apo"><span class="jush-op">'</span>60 minutes<span class="jush-op">'</span></span><br>GROUP BY measuretype<br>ORDER BY measuretype</span></span></code></pre>
+<div class="scrollable">
+<table cellspacing="0" class="nowrap">
+<thead><tr><th>avgvalue</th><th title="sensorinputs.measuretype">measuretype</th></tr></thead>
+<tbody><tr><td>754.8333333333333333</td><td>moisture            </td></tr><tr class="odd"><td>14.5089381195000000</td><td>temp                </td></tr></tbody></table>
+</div>
+<form action="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=select%20avg(value)%20as%20avgvalue%2C%20measuretype%20%0Afrom%20sensorinputs%0AWHERE%20created%20%3E%3D%20NOW()%20-%20INTERVAL%20%2760%20minutes%27%0AGROUP%20BY%20measuretype%0AORDER%20BY%20measuretype%3B%0A%0A%0A" method="post">
+<p>2 rows <span class="time">(0.074 s)</span> <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=select+avg%28value%29+as+avgvalue%2C+measuretype+%0D%0Afrom+sensorinputs%0D%0AWHERE+created+%3E%3D+NOW%28%29+-+INTERVAL+%2760+minutes%27%0D%0AGROUP+BY+measuretype%0D%0AORDER+BY+measuretype">Edit</a>, <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=select%20avg(value)%20as%20avgvalue%2C%20measuretype%20%0Afrom%20sensorinputs%0AWHERE%20created%20%3E%3D%20NOW()%20-%20INTERVAL%20%2760%20minutes%27%0AGROUP%20BY%20measuretype%0AORDER%20BY%20measuretype%3B%0A%0A%0A#explain-1">Explain</a><script nonce="">qsl('a').onclick = partial(toggle, 'explain-1');</script>, <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=select%20avg(value)%20as%20avgvalue%2C%20measuretype%20%0Afrom%20sensorinputs%0AWHERE%20created%20%3E%3D%20NOW()%20-%20INTERVAL%20%2760%20minutes%27%0AGROUP%20BY%20measuretype%0AORDER%20BY%20measuretype%3B%0A%0A%0A#export-1">Export</a><script nonce="">qsl('a').onclick = partial(toggle, 'export-1');</script><span id="export-1" class="hidden">: <select name="output"><option value="text">open</option><option value="file">save</option><option value="gz">gzip</option></select> <select name="format"><option value="csv">CSV,</option><option value="csv;">CSV;</option><option value="tsv">TSV</option></select><input type="hidden" name="query" value="select avg(value) as avgvalue, measuretype 
+from sensorinputs
+WHERE created &gt;= NOW() - INTERVAL &#39;60 minutes&#39;
+GROUP BY measuretype
+ORDER BY measuretype"> <input type="submit" name="export" value="Export"><input type="hidden" name="token" value="760933:360089"></span>
+</p></form>
+<div id="explain-1" class="hidden">
+<div class="scrollable">
+<table cellspacing="0" class="nowrap">
+<thead><tr><th>QUERY PLAN</th></tr></thead>
+<tbody><tr><td>GroupAggregate  (cost=52.95..52.96 rows=1 width=53)</td></tr><tr class="odd"><td>  Group Key: measuretype</td></tr><tr><td>  -&gt;  Sort  (cost=52.95..52.95 rows=1 width=29)</td></tr><tr class="odd"><td>        Sort Key: measuretype</td></tr><tr><td>        -&gt;  Seq Scan on sensorinputs  (cost=0.00..52.95 rows=1 width=29)</td></tr><tr class="odd"><td>              Filter: (created &gt;= (now() - '01:00:00'::interval))</td></tr></tbody></table>
+</div>
+</div>
+
+<form action="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=select%20avg(value)%20as%20avgvalue%2C%20measuretype%20%0Afrom%20sensorinputs%0AWHERE%20created%20%3E%3D%20NOW()%20-%20INTERVAL%20%2760%20minutes%27%0AGROUP%20BY%20measuretype%0AORDER%20BY%20measuretype%3B%0A%0A%0A" method="post" enctype="multipart/form-data" id="form">
+<p><pre contenteditable="true" class="sqlarea jush-pgsql jush" style="border: 1px inset rgb(204, 204, 204); width: 587px; height: 348px; padding: 3px; overflow: auto; resize: both;"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue, measuretype <br>from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a><br>WHERE created &gt;= <a href="https://www.postgresql.org/docs/11/static/functions-datetime.html" class="jush-help" target="_blank" rel="noreferrer noopener">NOW</a>() - INTERVAL <span class="jush-sql_apo"><span class="jush-op">'</span>2 days<span class="jush-op">'</span></span><br>GROUP BY measuretype<br>ORDER BY measuretype;<br><br><br></span></pre><textarea name="query" rows="20" cols="80" class="sqlarea jush-pgsql" spellcheck="false" wrap="off" style="display: none;">select avg(value) as avgvalue, measuretype 
+from sensorinputs
+WHERE created &gt;= NOW() - INTERVAL '60 minutes'
+GROUP BY measuretype
+ORDER BY measuretype;
+
+
+</textarea><script nonce="">qs('#form').onsubmit = partial(sqlSubmit, qs('#form'), '/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&username=expoaonwdomdgr&db=d8imtor2usqnea&ns=public');</script>
+</p><p><input type="submit" value="Execute" title="Ctrl+Enter" class="">
+Limit rows: <input type="number" name="limit" class="size" value="">
+<label><input type="checkbox" name="error_stops" value="1">Stop on error</label>
+<label><input type="checkbox" name="only_errors" value="1">Show only errors</label>
+<input type="hidden" name="token" value="760933:360089">
+</p><fieldset><legend><a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=select%20avg(value)%20as%20avgvalue%2C%20measuretype%20%0Afrom%20sensorinputs%0AWHERE%20created%20%3E%3D%20NOW()%20-%20INTERVAL%20%2760%20minutes%27%0AGROUP%20BY%20measuretype%0AORDER%20BY%20measuretype%3B%0A%0A%0A#fieldset-history">History</a><script nonce="">qsl('a').onclick = partial(toggle, 'fieldset-history');</script></legend><div id="fieldset-history" class="hidden">
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=11">Edit</a> <span class="time" title="2019-10-09">20:13:54</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue, measuretype &nbsp;from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a> WHERE created &gt;= N</span></span></code><i>…</i><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=10">Edit</a> <span class="time" title="2019-10-09">20:13:46</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue, measuretype &nbsp;from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a> WHERE created &gt;= N</span></span></code><i>…</i><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=9">Edit</a> <span class="time" title="2019-10-09">20:12:47</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue, measuretype &nbsp;from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a> WHERE created &gt;= N</span></span></code><i>…</i><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=8">Edit</a> <span class="time" title="2019-10-09">20:12:19</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue, measuretype &nbsp;from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a> WHERE created &gt;= N</span></span></code><i>…</i><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=7">Edit</a> <span class="time" title="2019-10-09">20:12:01</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> * from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a> LIMIT <span class="jush-num"><span class="jush-op">50</span></span>;</span></span></code><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=6">Edit</a> <span class="time" title="2019-10-09">20:11:42</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue, measuretype &nbsp;from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a> WHERE created &gt;= N</span></span></code><i>…</i><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=5">Edit</a> <span class="time" title="2019-10-09">20:11:24</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue &nbsp;from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a> WHERE created &gt;= <a href="https://www.postgresql.org/docs/11/static/functions-datetime.html" class="jush-help" target="_blank" rel="noreferrer noopener">NOW</a>() - INTERV</span></span></code><i>…</i><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=4">Edit</a> <span class="time" title="2019-10-09">20:10:59</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue &nbsp;from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a> WHERE datetime &gt;= DATE_SUB(<a href="https://www.postgresql.org/docs/11/static/functions-datetime.html" class="jush-help" target="_blank" rel="noreferrer noopener">NOW</a>(</span></span></code><i>…</i><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=3">Edit</a> <span class="time" title="2019-10-09">20:10:50</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> * , <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue &nbsp;from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a> WHERE datetime &gt;= DATE_SUB(</span></span></code><i>…</i><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=2">Edit</a> <span class="time" title="2019-10-09">20:09:17</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-aggregate.html" class="jush-help" target="_blank" rel="noreferrer noopener">avg</a>(value) as avgvalue from <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="jush-custom">sensorinputs</a> &nbsp;;</span></span></code><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=1">Edit</a> <span class="time" title="2019-10-09">20:07:50</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-datetime.html" class="jush-help" target="_blank" rel="noreferrer noopener">date_trunc</a>(<span class="jush-sql_apo"><span class="jush-op">'</span>hour<span class="jush-op">'</span></span>, created - interval <span class="jush-sql_apo"><span class="jush-op">'</span>1 minutes<span class="jush-op">'</span></span>) as interv_start, date_</span></span></code><i>…</i><br>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=0">Edit</a> <span class="time" title="2019-10-09">20:07:20</span> <code class="jush-pgsql"><span class="jush-pgsql"><span class="jush"><a href="https://www.postgresql.org/docs/11/static/sql-select.html" class="jush-help" target="_blank" rel="noreferrer noopener">select</a> <a href="https://www.postgresql.org/docs/11/static/functions-datetime.html" class="jush-help" target="_blank" rel="noreferrer noopener">date_trunc</a>(<span class="jush-sql_apo"><span class="jush-op">'</span>hour<span class="jush-op">'</span></span>, created - interval <span class="jush-sql_apo"><span class="jush-op">'</span>1 minutes<span class="jush-op">'</span></span>) as interv_start, date_</span></span></code><i>…</i><br>
+<input type="submit" name="clear" value="Clear">
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=&amp;history=all">Edit all</a>
+</div></fieldset>
+</form>
+</div>
+
+<form action="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=select%20avg(value)%20as%20avgvalue%2C%20measuretype%20%0Afrom%20sensorinputs%0AWHERE%20created%20%3E%3D%20NOW()%20-%20INTERVAL%20%2760%20minutes%27%0AGROUP%20BY%20measuretype%0AORDER%20BY%20measuretype%3B%0A%0A%0A" method="post">
+<div id="lang">Language: <select name="lang"><option value="en" selected="">English</option><option value="ar">العربية</option><option value="bg">Български</option><option value="bn">বাংলা</option><option value="bs">Bosanski</option><option value="ca">Català</option><option value="cs">Čeština</option><option value="da">Dansk</option><option value="de">Deutsch</option><option value="el">Ελληνικά</option><option value="es">Español</option><option value="et">Eesti</option><option value="fa">فارسی</option><option value="fi">Suomi</option><option value="fr">Français</option><option value="gl">Galego</option><option value="he">עברית</option><option value="hu">Magyar</option><option value="id">Bahasa Indonesia</option><option value="it">Italiano</option><option value="ja">日本語</option><option value="ka">ქართული</option><option value="ko">한국어</option><option value="lt">Lietuvių</option><option value="ms">Bahasa Melayu</option><option value="nl">Nederlands</option><option value="no">Norsk</option><option value="pl">Polski</option><option value="pt">Português</option><option value="pt-br">Português (Brazil)</option><option value="ro">Limba Română</option><option value="ru">Русский</option><option value="sk">Slovenčina</option><option value="sl">Slovenski</option><option value="sr">Српски</option><option value="ta">த‌மிழ்</option><option value="th">ภาษาไทย</option><option value="tr">Türkçe</option><option value="uk">Українська</option><option value="vi">Tiếng Việt</option><option value="zh">简体中文</option><option value="zh-tw">繁體中文</option></select><script nonce="">qsl('select').onchange = function () { this.form.submit(); };</script> <input type="submit" value="Use" class="hidden">
+<input type="hidden" name="token" value="521370:595558">
+</div>
+</form>
+<form action="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=select%20avg(value)%20as%20avgvalue%2C%20measuretype%20%0Afrom%20sensorinputs%0AWHERE%20created%20%3E%3D%20NOW()%20-%20INTERVAL%20%2760%20minutes%27%0AGROUP%20BY%20measuretype%0AORDER%20BY%20measuretype%3B%0A%0A%0A" method="post">
+<p class="logout">
+<input type="submit" name="logout" value="Logout" id="logout">
+<input type="hidden" name="token" value="760933:360089">
+</p>
+</form>
+<div id="menu">
+<h1>
+<a href="https://www.adminer.org/" target="_blank" rel="noreferrer noopener" id="h1">Adminer</a> <span class="version">4.7.3</span>
+<a href="https://www.adminer.org/#download" target="_blank" rel="noreferrer noopener" id="version"></a>
+</h1>
+<script src="./SQL command - ec2-79-125-126-205.eu-west-1.compute.amazonaws.com - Adminer_files/saved_resource(2)" nonce=""></script>
+<script nonce="">
+var jushLinks = { pgsql: [ '?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&username=expoaonwdomdgr&db=d8imtor2usqnea&ns=public&table=$&', /\b(sensorinputs)\b/g ] };
+jushLinks.bac = jushLinks.pgsql;
+jushLinks.bra = jushLinks.pgsql;
+jushLinks.sqlite_quo = jushLinks.pgsql;
+jushLinks.mssql_bra = jushLinks.pgsql;
+bodyLoad('11');
+</script>
+<form action="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=select%20avg(value)%20as%20avgvalue%2C%20measuretype%20%0Afrom%20sensorinputs%0AWHERE%20created%20%3E%3D%20NOW()%20-%20INTERVAL%20%2760%20minutes%27%0AGROUP%20BY%20measuretype%0AORDER%20BY%20measuretype%3B%0A%0A%0A">
+<p id="dbs">
+<input type="hidden" name="pgsql" value="ec2-79-125-126-205.eu-west-1.compute.amazonaws.com"><input type="hidden" name="username" value="expoaonwdomdgr"><span title="database">DB</span>: <select name="db"><option value=""></option><option selected="">d8imtor2usqnea</option><option>template0</option></select><script nonce="">mixin(qsl('select'), {onmousedown: dbMouseDown, onchange: dbChange});</script>
+<input type="submit" value="Use" class="hidden">
+<br>Schema: <select name="ns"><option value=""></option><option>information_schema</option><option>pg_catalog</option><option>pg_temp_1</option><option>pg_toast</option><option>pg_toast_temp_1</option><option selected="">public</option></select><script nonce="">mixin(qsl('select'), {onmousedown: dbMouseDown, onchange: dbChange});</script>
+<input type="hidden" name="sql" value=""></p></form>
+<p class="links"><a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;sql=" class="active ">SQL command</a>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;import=">Import</a>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;dump=" id="dump">Export</a>
+<a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;create=">Create table</a>
+</p><ul id="tables" style="overflow: auto;"><script nonce="">mixin(qs('#tables'), {onmouseover: menuOver, onmouseout: menuOut});</script>
+<li><a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;select=sensorinputs" class="select">select</a> <a href="https://adminer.cs50.net/?pgsql=ec2-79-125-126-205.eu-west-1.compute.amazonaws.com&amp;username=expoaonwdomdgr&amp;db=d8imtor2usqnea&amp;ns=public&amp;table=sensorinputs" class="structure" title="Show structure">sensorinputs</a>
+</li></ul>
+</div>
+<script nonce="">setupSubmitHighlight(document);</script>
+</body></html>

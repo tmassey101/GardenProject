@@ -15,6 +15,8 @@ th {
   color: #672A00
 }
 
+
+
 th, td {
   border-bottom: 1px solid #ddd;
 }
@@ -53,6 +55,8 @@ canvas{
   padding: 0%
 }
 
+
+
 .metric h1 {
   border: 0;
   padding: 0;
@@ -64,6 +68,14 @@ canvas{
   padding: 0;
   margin: 0;
   color: black
+}
+
+#temp {
+  color: #eb7434
+}
+
+#moisture {
+  color: #34a1eb
 }
 
 /*

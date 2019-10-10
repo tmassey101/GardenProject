@@ -6,6 +6,7 @@ from sqlalchemy.engine import reflection
 import numpy as np
 from sqlalchemy.orm import scoped_session, sessionmaker
 from dotenv import load_dotenv
+from sklearn.linear_model import LinearRegression
 
 #from datatime import datatime, date
 
@@ -34,12 +35,19 @@ print(insp.get_table_names())
 def index():
     title = "Home"
     chartType = "'line'"
+
+    #SQL Queries
     data = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, date_trunc('hour', created - interval '1 minutes')  + interval '1 hours' as interv_end, avg(value) as avgvalue, measuretype from sensorinputs where created >= NOW() - INTERVAL '120 hours' group by measuretype, date_trunc('hour', created - interval '1 minutes') order by interv_start").fetchall()
+    data2 = db.execute("select avg(value) as avgvalue, measuretype from sensorinputs WHERE created >= NOW() - INTERVAL '60 minutes' GROUP BY measuretype ORDER BY measuretype;").fetchall()
+    moisturetrend = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, avg(value) as avgvalue, measuretype from sensorinputs where created >= NOW() - INTERVAL '3 days' AND measuretype = 'moisture' group by measuretype, date_trunc('hour', created - interval '1 minutes') order by interv_start;").fetchall()
 
     values = []
     id = []
     labels = []
-    measuretype = []
+    measuretype = []  
+    moistureY = []
+    tempY = []
+    datetimeX = []
 
     for i in data:
 
@@ -47,13 +55,55 @@ def index():
         labels.append(i[1].strftime("%c"))
         measuretype.append(str(i[3]))
 
-    print(type(id), type(values), type(labels))
-   
-    print(values[2])
-    print(labels[2])
-    print(measuretype[2])
+        if ('temp' in str(i[3])):
+            tempY.append(float(i[2]))
 
-    return render_template('index.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype, title=title)
+        elif ('moisture' in str(i[3])):
+            moistureY.append(float(i[2]))
+
+        else: 
+            return ("Error : unknown measure")
+
+    metrics = []
+    key = []
+    
+    for i in data2:
+        metrics.append(float(i[0]))
+        key.append(str(i[1]))
+
+    #set desired average moisture level to re-water
+    watering_point = 500
+    
+    y = np.asarray(moistureY)
+    x = np.asarray(labels).reshape((-1,1))
+    x2 = np.arange(len(moistureY)).reshape((-1,1))
+
+    print(y.shape, x.shape, x2.shape)
+
+    model = LinearRegression().fit(x2, y)
+    moistureCoef = float(model.coef_)
+    moistureIntercept = model.intercept_
+
+    if (model.coef_ < 0):
+    
+        hr_pred = (watering_point - model.intercept_) / model.coef_
+        print(hr_pred)
+        
+        day_pred = hr_pred / 24
+        print(day_pred)
+
+    else:
+        print("Plant getting wetter?")
+
+    moistureTrend = []
+
+    for i in np.arange(0,len(labels)):
+        moistureTrend.append( (i * moistureCoef) + moistureIntercept)
+        
+    
+
+    return render_template('index.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype, title=title, metrics=metrics, day_pred=day_pred, moistureTrend=moistureTrend)
+
 
 @app.route("/insert/<value>", methods=["GET", "POST"])
 def insert(value):

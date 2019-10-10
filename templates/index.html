@@ -22,18 +22,18 @@
         <div class="row">
           <div class="col-sm-6 col-lg-6">
             <h5>Last Hour Average Temperature:</h5>  
-            <div class="metric">
-              <h1>22.2</h1>
+            <div class="metric" id=temp>
+              <h1>{{ metrics[1] | round(1) }}°C</h1>
             </div>
             <br>
             <h5>Last Hour Average Moisture Content:</h5>
-            <div class="metric">
-              <h1>627</h1>
+            <div class="metric" id=moisture>
+              <h1>{{ metrics[0] | round|int }}</h1>
             </div>
             <br>
             <h5>Next required watering:</h5>
             <div class="metric">
-              <h1>3.2</h1>
+              <h1>{{ day_pred | round(1,'floor')}}</h1>
               <p>days</p>
             </div>
           </div>
@@ -69,15 +69,18 @@
       var values = {{values}};
       var measuretype = {{measuretype | safe}};
       var timeFormat = 'DD/MM/YYYY HH:mm';
+      var moistureTrend = {{ moistureTrend | safe}};
       
       console.log(values[2])
       console.log(labels[2])
       console.log(measuretype[2])
+      console.log(moistureTrend[2])
       console.log(typeof(measuretype[2]))
 
       var plotData = [];
       var plotTemp = [];
       var plotMoisture = [];
+      var plotMoistureTrend = [];
 
       for (var i=0; i < values.length; i++) {
         var mtype = measuretype[i];
@@ -86,10 +89,13 @@
         }
         else if (mtype.startsWith("moisture")){
           plotMoisture.push({'x': labels[i], 'y': values[i]});
+          plotMoistureTrend.push({'x': labels[i], 'y': moistureTrend[i]});
         }
+        
       }        
       console.log(plotData)
       console.log(plotMoisture)
+      console.log(plotMoistureTrend)
 
       var ctx = document.getElementById("myChart");
 
@@ -116,8 +122,19 @@
             fill: false,
             yAxisID: '2',
             lineTension: 0
-            
-          }
+            }
+            ,
+            { 
+            data: plotMoistureTrend,
+            label: "MoistureTrend",
+            labelString: "Soil Moisture Content",
+            borderColor: "#0C5DC4",
+            fill: false,
+            yAxisID: '2',
+            lineTension: 0,
+            borderDash: [5, 5],
+            pointRadius: 0
+            }
           ]
         },
         options: {
@@ -125,7 +142,7 @@
           
           title:      {
               display: true,
-              text:    "Chart.js Time Scale"
+              text:    "Temperature & Moisture Over Time"
           },
           scales:     {
               xAxes: [{
@@ -138,22 +155,22 @@
               }]
               ,
               yAxes: [{
-              scaleLabel: {
-                display: true,
-                labelString: 'Temperature °C'
-              },
-              id: '1',
-              type: 'linear',
-              position: 'left',
-              beginAtZero: true
-              }, {
-              scaleLabel: {
-                display: true,
-                labelString: 'Moisture Content'
-              },
-              id: '2',
-              type: 'linear',
-              position: 'right'
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Temperature °C'
+                },
+                id: '1',
+                type: 'linear',
+                position: 'left',
+                beginAtZero: true
+                }, {
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Moisture Content'
+                },
+                id: '2',
+                type: 'linear',
+                position: 'right'
               }]
             },
           tooltips: {
