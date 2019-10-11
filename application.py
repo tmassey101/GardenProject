@@ -37,7 +37,7 @@ def index():
     chartType = "'line'"
 
     #SQL Queries
-    data = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, date_trunc('hour', created - interval '1 minutes')  + interval '1 hours' as interv_end, avg(value) as avgvalue, measuretype from sensorinputs where created >= NOW() - INTERVAL '120 hours' group by measuretype, date_trunc('hour', created - interval '1 minutes') order by interv_start").fetchall()
+    data = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, date_trunc('hour', created - interval '1 minutes')  + interval '1 hours' as interv_end, avg(value) as avgvalue, measuretype from sensorinputs where created >= NOW() - INTERVAL '240 hours' group by measuretype, date_trunc('hour', created - interval '1 minutes') order by interv_start").fetchall()
     data2 = db.execute("select avg(value) as avgvalue, measuretype from sensorinputs WHERE created >= NOW() - INTERVAL '60 minutes' GROUP BY measuretype ORDER BY measuretype;").fetchall()
     moisturetrend = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, avg(value) as avgvalue, measuretype from sensorinputs where created >= NOW() - INTERVAL '3 days' AND measuretype = 'moisture' group by measuretype, date_trunc('hour', created - interval '1 minutes') order by interv_start;").fetchall()
 
@@ -83,25 +83,18 @@ def index():
     model = LinearRegression().fit(x2, y)
     moistureCoef = float(model.coef_)
     moistureIntercept = model.intercept_
-
-    if (model.coef_ < 0):
+   
+    hr_pred = (watering_point - model.intercept_) / model.coef_
+    print(hr_pred)
     
-        hr_pred = (watering_point - model.intercept_) / model.coef_
-        print(hr_pred)
-        
-        day_pred = hr_pred / 24
-        print(day_pred)
-
-    else:
-        print("Plant getting wetter?")
+    day_pred = hr_pred / 24
+    print(day_pred)
 
     moistureTrend = []
 
     for i in np.arange(0,len(labels)):
         moistureTrend.append( (i * moistureCoef) + moistureIntercept)
         
-    
-
     return render_template('index.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype, title=title, metrics=metrics, day_pred=day_pred, moistureTrend=moistureTrend)
 
 
