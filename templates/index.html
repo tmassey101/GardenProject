@@ -36,6 +36,12 @@
               <h1>{{ day_pred | round(1,'floor')}}</h1>
               <p>days</p>
             </div>
+            <br>
+            <h5>Last watering:</h5>
+            <div class="metric">
+              <h5>{{ latestwater }}</h5>
+              
+            </div>
           </div>
             
           <div class="col-6 col-lg-6"> 
@@ -73,6 +79,7 @@
       var measuretype = {{measuretype | safe}};
       var timeFormat = 'DD/MM/YYYY HH:mm';
       var moistureTrend = {{ moistureTrend | safe}};
+      
       
       console.log(values[2])
       console.log(labels[2])

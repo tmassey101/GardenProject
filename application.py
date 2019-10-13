@@ -7,6 +7,7 @@ import numpy as np
 from sqlalchemy.orm import scoped_session, sessionmaker
 from dotenv import load_dotenv
 from sklearn.linear_model import LinearRegression
+import datetime
 
 #from datatime import datatime, date
 
@@ -40,6 +41,15 @@ def index():
     data = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, date_trunc('hour', created - interval '1 minutes')  + interval '1 hours' as interv_end, avg(value) as avgvalue, measuretype from sensorinputs where created >= NOW() - INTERVAL '240 hours' group by measuretype, date_trunc('hour', created - interval '1 minutes') order by interv_start").fetchall()
     data2 = db.execute("select avg(value) as avgvalue, measuretype from sensorinputs WHERE created >= NOW() - INTERVAL '60 minutes' GROUP BY measuretype ORDER BY measuretype;").fetchall()
     moisturetrend = db.execute("select date_trunc('hour', created - interval '1 minutes') as interv_start, avg(value) as avgvalue, measuretype from sensorinputs where created >= NOW() - INTERVAL '3 days' AND measuretype = 'moisture' group by measuretype, date_trunc('hour', created - interval '1 minutes') order by interv_start;").fetchall()
+    lastwatering = db.execute("select created from sensorinputs where measuretype = 'watering' order by created desc limit 1")
+
+    latestwater = []
+    for row in lastwatering:
+        t = row[0]
+        t = t.strftime('%H:%M %d/%m/%Y ')
+        latestwater.append(t)
+        
+    latestwater = latestwater[0]
 
     values = []
     id = []
@@ -48,6 +58,7 @@ def index():
     moistureY = []
     tempY = []
     datetimeX = []
+    watering = []
 
     for i in data:
 
@@ -61,8 +72,11 @@ def index():
         elif ('moisture' in str(i[3])):
             moistureY.append(float(i[2]))
 
+        elif ('watering' in str(i[3])):
+            watering.append(1)
+
         else: 
-            return ("Error : unknown measure")
+            print("Error : unknown measure")
 
     metrics = []
     key = []
@@ -72,30 +86,27 @@ def index():
         key.append(str(i[1]))
 
     #set desired average moisture level to re-water
-    watering_point = 500
+    watering_point = 700
     
     y = np.asarray(moistureY)
     x = np.asarray(labels).reshape((-1,1))
     x2 = np.arange(len(moistureY)).reshape((-1,1))
-
-    print(y.shape, x.shape, x2.shape)
 
     model = LinearRegression().fit(x2, y)
     moistureCoef = float(model.coef_)
     moistureIntercept = model.intercept_
    
     hr_pred = (watering_point - model.intercept_) / model.coef_
-    print(hr_pred)
     
     day_pred = hr_pred / 24
-    print(day_pred)
+    
 
     moistureTrend = []
 
     for i in np.arange(0,len(labels)):
         moistureTrend.append( (i * moistureCoef) + moistureIntercept)
         
-    return render_template('index.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype, title=title, metrics=metrics, day_pred=day_pred, moistureTrend=moistureTrend)
+    return render_template('index.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype, title=title, metrics=metrics, day_pred=day_pred, moistureTrend=moistureTrend, latestwater=latestwater)
 
 
 @app.route("/insert/<value>", methods=["GET", "POST"])
