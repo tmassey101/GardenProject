@@ -8,6 +8,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from dotenv import load_dotenv
 from sklearn.linear_model import LinearRegression
 import datetime
+import pandas as pd
 
 #from datatime import datatime, date
 
@@ -30,6 +31,13 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 insp = reflection.Inspector.from_engine(engine)
 print(insp.get_table_names())
+
+
+def floatList(pdList):
+    
+    floatsOut = pdList.to_list()
+    floatsOut = [float(i) for i in floatsOut]
+    return floatsOut
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -132,33 +140,6 @@ def raw():
 
     return str(data)
 
-@app.route("/charttest/", methods=["GET", "POST"])
-def hourlyChart():
-
-    title = "Hourly Chart"
-    chartType = "'line'"
-    data = db.execute("SELECT id, value, created, measuretype FROM sensorinputs WHERE created >= NOW() - INTERVAL '60 minutes' ORDER BY created ASC;").fetchall()
-
-    
-    values = []
-    id = []
-    labels = []
-    measuretype = []
-
-    for i in data:
-        id.append(int(i[0]))
-        values.append(float(i[1]))
-        labels.append(i[2].strftime("%c"))
-        measuretype.append(str(i[3]))
-
-    print(type(id), type(values), type(labels), type(measuretype))
-    print(id[2])
-    print(values[2])
-    print(labels[2])
-    print(measuretype[2])
-    
-
-    return render_template('charttest.html', labels=labels, values=values, measuretype=measuretype, chartType=chartType, title=title)
 
 @app.route("/charttest/daily", methods=["GET", "POST"])
 def dailyChart():
@@ -249,3 +230,84 @@ def insertall(deviceid, sensorid, measuretype, value):
     db.commit()
 
     return "Successfully inserted: "+query
+
+@app.route("/test", methods=["GET", "POST"])
+def test():
+    title = "Home"
+    chartType = "'line'"
+
+    #SQL Query
+    mlQuery = db.execute("select date_trunc('hour', created - interval '1 minutes') as CreatedHour, avg(value) as Value, TRIM(measuretype) as Type from sensorinputs group by MeasureType, CreatedHour order by CreatedHour").fetchall()
+
+    # Create pivoted dataframe for each variable
+    df = pd.DataFrame(mlQuery, columns=['CreatedHr', 'AvgValue', 'Type'])
+    mldf = df.pivot(index='CreatedHr', columns='Type', values='AvgValue')
+    mldf['CreatedHr'] = mldf.index
+    mldf['watering'] = mldf['watering'].fillna(0)
+
+    # Categorical True/False column for watering
+    wateredTimes = mldf.loc[mldf['watering'] == 1]
+    wateredTimes = wateredTimes.index
+
+    mldf['mostRecentWater'] = wateredTimes.searchsorted(value = mldf.index) - 1
+    mldf[mldf['mostRecentWater']< 0 ] = 0
+    mldf['mostRecentWater'] = wateredTimes.values[mldf['mostRecentWater']]
+    mldf['wateringElapsed']= (mldf.index - mldf['mostRecentWater']).astype('timedelta64[h]')
+
+    # Calculate rolling average moisture level
+    periods = 4
+    mldf['Prev4Hrs'] =  mldf['moisture'].rolling(min_periods=1, window=periods).mean()
+
+    mldf = mldf.dropna()
+
+    # Compute Correlation for Moisture Level
+
+    x_train = mldf['moisture']
+    y_train = mldf[['temp','watering','wateringElapsed','Prev4Hrs']]
+
+    model = LinearRegression().fit(y_train,x_train)
+    print("Model Coefs = ", model.coef_)
+    print("Model Interc = ", model.intercept_)
+
+    y_pred = model.predict(y_train)
+    mldf['moisturePred'] = y_pred
+
+    # Remove first line (zeros due to historical calc)
+    mldf = mldf.iloc[1:]
+
+    ### Create Historical Variables for Plotting
+    print(mldf.columns)
+    plotTemp = floatList(mldf['temp'])
+    plotMoisture = floatList(mldf['moisture']) 
+    plotWatering = floatList(mldf['watering'])
+    plotMoisturePred = floatList(mldf['moisturePred'])
+    
+    labels = mldf['CreatedHr'].to_list()
+    labels = [str(i) for i in labels]
+
+    lastTemp = plotTemp[-1]
+    lastMoist = plotMoisture[-1]
+    latestWater = plotWatering[-1]
+
+    ### Set desired average moisture level to re-water
+    watering_point = 500
+
+    ### Calculate linear moisture trend and rewater point
+    TrendDays = 3
+    Moisture3d = plotMoisture
+
+    y = np.asarray(Moisture3d)
+    x = np.arange(len(Moisture3d)).reshape((-1,1))
+
+    model = LinearRegression().fit(x, y)
+    moistureCoef = float(model.coef_)
+    moistureIntercept = model.intercept_
+   
+    hr_pred = (watering_point - model.intercept_) / model.coef_
+    day_pred = hr_pred / 24
+    
+    moistureTrend = []
+    for i in np.arange(0,len(Moisture3d)):
+        moistureTrend.append( (i * moistureCoef) + moistureIntercept)
+            
+    return render_template('test.html', latestWater=latestWater, lastTemp=lastTemp, lastMoist=lastMoist, plotTemp=plotTemp, plotMoisture=plotMoisture, plotWatering=plotWatering, plotMoisturePred=plotMoisturePred, labels=labels, chartType=chartType, title=title, day_pred=day_pred, moistureTrend=moistureTrend)
