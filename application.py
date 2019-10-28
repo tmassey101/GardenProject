@@ -287,7 +287,7 @@ def test():
 
     lastTemp = plotTemp[-1]
     lastMoist = plotMoisture[-1]
-    latestWater = plotWatering[-1]
+    latestWater = plotWatering[0]
 
     ### Set desired average moisture level to re-water
     watering_point = 500
