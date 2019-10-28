@@ -287,7 +287,10 @@ def test():
 
     lastTemp = plotTemp[-1]
     lastMoist = plotMoisture[-1]
-    latestWater = plotWatering[0]
+    waterings = mldf.index[mldf['watering'] == 1]
+    latestWater = waterings.to_list()[-1]
+
+    print(latestWater)
 
     ### Set desired average moisture level to re-water
     watering_point = 500
