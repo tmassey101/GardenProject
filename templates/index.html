@@ -23,23 +23,23 @@
           <div class="col-sm-6 col-lg-6">
             <h5>Last Hour Average Temperature:</h5>  
             <div class="metric" id=temp>
-              <h1>{{ metrics[1] | round(1) }}°C</h1>
+              <h1>°C</h1>
             </div>
             <br>
             <h5>Last Hour Average Moisture Content:</h5>
             <div class="metric" id=moisture>
-              <h1>{{ metrics[0] | round|int }}</h1>
+              <h1></h1>
             </div>
             <br>
             <h5>Next required watering:</h5>
             <div class="metric">
-              <h1>{{ day_pred | round(1,'floor')}}</h1>
+              <h1></h1>
               <p>days</p>
             </div>
             <br>
             <h5>Last watering:</h5>
             <div class="metric">
-              <h5>{{ latestwater }}</h5>
+              <h5></h5>
               
             </div>
           </div>
