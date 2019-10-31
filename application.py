@@ -7,7 +7,7 @@ import numpy as np
 from sqlalchemy.orm import scoped_session, sessionmaker
 from dotenv import load_dotenv
 from sklearn.linear_model import LinearRegression
-import datetime
+import datetime as dt
 import pandas as pd
 
 #from datatime import datatime, date
@@ -100,7 +100,7 @@ def index():
     waterings = mldf.index[mldf['watering'] == 1]
     latestWater = waterings.to_list()[-1]
     
-
+    
     ### Set desired average moisture level to re-water
     watering_point = 500
 
@@ -122,7 +122,7 @@ def index():
     for i in np.arange(0,len(Moisture3d)):
         moistureTrend.append( (i * linMoistureCoef) + linMoistureIntercept)
 
-    return render_template('test.html', latestWater=latestWater, lastTemp=lastTemp, lastMoist=lastMoist, plotTemp=plotTemp, plotMoisture=plotMoisture, plotWatering=plotWatering, plotMoisturePred=plotMoisturePred, labels=labels, chartType=chartType, title=title, day_pred=day_pred, moistureTrend=moistureTrend)
+    return render_template('index.html', latestWater=latestWater, lastTemp=lastTemp, lastMoist=lastMoist, plotTemp=plotTemp, plotMoisture=plotMoisture, plotWatering=plotWatering, plotMoisturePred=plotMoisturePred, labels=labels, chartType=chartType, title=title, day_pred=day_pred, moistureTrend=moistureTrend)
 
 
 @app.route("/insert/<value>", methods=["GET", "POST"])
@@ -239,8 +239,8 @@ def insertall(deviceid, sensorid, measuretype, value):
 
     return "Successfully inserted: "+query
 
-@app.route("/test", methods=["GET", "POST"])
-def test():
+@app.route("/predictive", methods=["GET", "POST"])
+def predictive():
     title = "Home"
     chartType = "'line'"
 
@@ -287,9 +287,15 @@ def test():
     print(mldf.columns)
     plotTemp = floatList(mldf['temp'])
     plotMoisture = floatList(mldf['moisture']) 
-    plotWatering = floatList(mldf['watering'])
+    plotWatering = floatList(mldf['watering']*1000)
     plotMoisturePred = floatList(mldf['moisturePred'])
     
+    print("Watering series:")
+    print(plotWatering[0:5])
+    print(plotMoisture[0:5])
+
+    ### Watering bars are too narrow. How to fix?
+
     labels = mldf['CreatedHr'].to_list()
     labels = [str(i) for i in labels]
 
@@ -299,7 +305,7 @@ def test():
     waterings = mldf.index[mldf['watering'] == 1]
     latestWater = waterings.to_list()[-1]
     
-
+    
     ### Set desired average moisture level to re-water
     watering_point = 500
 
@@ -328,31 +334,53 @@ def test():
 
     histMoisture = np.mean(plotMoisture[rollingPeriods:]) #base historical moisture on last x periods
     futTemp = plotTemp[-24:] #base historical temps on last 24 hours
+    futElapsed = lastElapsed[-1] #Start elapsed count from last value
+    futCreated = mldf['CreatedHr'].iloc[-1]
+    futMoisture = mldf['moisture'].iloc[-1]
+
+    futTemp = 3*(futTemp)
+    d = {'futTemp': futTemp}
+    futDf = pd.DataFrame(data=d)
+    futDf['futElapsed'] = futDf.index + futElapsed
+    futDf['futCreated'] = futCreated +  pd.to_timedelta(futDf.index+1, unit='h')
+
+    # Convert future dataframe to lists for plotting
     
+    futCreated = futDf['futCreated'].to_list()
+    futCreated = [str(i) for i in futCreated]
+    futlabels = labels + futCreated
+    plotFutTemp = floatList(futDf['futTemp'])
 
-    hours = 72 #enter days of history as future temps
-    for i in range(hours-24): #append multple days as set
-        futTemp.append(futTemp)
+    # Iterate for each row and calcualte predicted moisture value, based on previous values
+    futDf['futMoisture'] = 0
+    prevMoisture = float(futMoisture)
 
-    histWater = lastElapsed[-1]
-    futElapsed = [histWater]
 
-    i = 1
-    while i < 72:
-        futElapsed.append(futElapsed[0]+i)
-        i+=1
+    for row in futDf.iterrows():
+        futDf['futMoisture'] = model.intercept_ + (model.coef_[0]*futDf['futTemp']) + (model.coef_[2]*futDf['futElapsed']) + (model.coef_[3]*prevMoisture)
+        prevMoisture = futDf['futMoisture']
 
-    print(len(futTemp))
-    print(len(futElapsed))
+    plotFutMoisture = floatList(futDf['futMoisture'])
+
+    # Insert values to beginning of series to fit to correct labels
+
+    for i in range(0,len(labels)):
+        plotFutTemp.insert(0,float(0.0))
+        plotFutMoisture.insert(0,float(0.0))
+
+    print(futDf)
+
+    # Append null values to existing historical datasets so value range is complete
+
+    lengthNull = len(plotFutTemp) - len(labels)
     
-    
-    futureDF = pd.DataFrame()
-    futureDF['futTemp'] = futTemp
-    futureDF['futElapsed'] = futElapsed                
-    
+    nullList = []
+    for i in range(int(lengthNull)):
+        nullList.append(float(0.0))
 
-    print(futureDF.columns)
-    print(futureDF.head(5))
+    plotTemp = plotTemp + nullList
+    plotMoisture = plotMoisture + nullList
+    moistureTrend = moistureTrend + nullList
+    plotWatering = plotWatering + nullList
     
-
-    return render_template('test.html', latestWater=latestWater, lastTemp=lastTemp, lastMoist=lastMoist, plotTemp=plotTemp, plotMoisture=plotMoisture, plotWatering=plotWatering, plotMoisturePred=plotMoisturePred, labels=labels, chartType=chartType, title=title, day_pred=day_pred, moistureTrend=moistureTrend)
+    return render_template('test.html', plotFutMoisture=plotFutMoisture, plotFutTemp=plotFutTemp, latestWater=latestWater, lastTemp=lastTemp, lastMoist=lastMoist, plotTemp=plotTemp, plotMoisture=plotMoisture, plotWatering=plotWatering, plotMoisturePred=plotMoisturePred, futlabels=futlabels, labels=labels, chartType=chartType, title=title, day_pred=day_pred, moistureTrend=moistureTrend)

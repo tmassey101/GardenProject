@@ -74,27 +74,29 @@
     
     <script>
 
-      var labels = {{ labels  | safe }};
+      var labels = {{ futlabels  | safe }};
 
       var timeFormat = 'DD/MM/YYYY HH:mm';
       var moistureTrend = {{ moistureTrend | safe}};
       
-      var plotData = [];
       var plotTemp = {{plotTemp | safe}};
       var plotMoisture = {{plotMoisture | safe}};
       var plotMoistureTrend = {{ moistureTrend | safe}};
-
-      console.log(plotData)
+      var plotWatering = {{ plotWatering | safe}};
+      var plotFutTemp = {{plotFutTemp | safe}};
+      var plotFutMoisture = {{plotFutMoisture | safe}};
+      
       console.log(plotMoisture)
       console.log(plotMoistureTrend)
       console.log(plotTemp)
-
+      console.log(plotWatering)
+      
       var ctx = document.getElementById("myChart");
 
       var myChart = new Chart(ctx, {
-        type: {{ chartType | safe }},
+        type: 'bar',
         data: {
-          labels : {{ labels | safe }},
+          labels : {{ futlabels | safe }},
           datasets: [
             { 
             data: plotTemp,
@@ -104,6 +106,31 @@
             fill: false,
             yAxisID: '1',
             lineTension: 0,
+            type: 'line'
+            }
+            ,
+            { 
+            data: plotFutTemp,
+            label: "Predicted Temperature",
+            labelString: "Predicted Temperature",
+            borderColor: "#eb3483",
+            fill: false,
+            yAxisID: '1',
+            lineTension: 0,
+            borderDash: [5, 5],
+            type: 'line'
+            }
+            ,
+            { 
+            data: plotFutMoisture,
+            label: "Predicted Moisture",
+            labelString: "Predicted Moisture",
+            borderColor: "#32a893",
+            fill: false,
+            yAxisID: '2',
+            lineTension: 0,
+            borderDash: [5, 5],
+            type: 'line'
             }
             ,
             { 
@@ -113,19 +140,34 @@
             borderColor: "#0C5DC4",
             fill: false,
             yAxisID: '2',
-            lineTension: 0
+            lineTension: 0,
+            type: 'line'
             }
             ,
             { 
             data: plotMoistureTrend,
-            label: "MoistureTrend (3-day)",
-            labelString: "Soil Moisture Content",
+            label: "MoistureTrend",
+            labelString: "Moisture Trend",
             borderColor: "#0C5DC4",
             fill: false,
             yAxisID: '2',
             lineTension: 0,
             borderDash: [5, 5],
-            pointRadius: 0
+            pointRadius: 0,
+            type: 'line'
+            }
+            ,
+            { 
+            data: plotWatering,
+            label: "Waterings",
+            labelString: "Soil Moisture Content",
+            backgroundColor: "#b3fcfc", 
+            hoverBackgroundColor: "#b3fcfc",
+            fill: true,
+            yAxisID: '2',
+            type: 'bar',
+            barThickness: 2,
+            maxBarThickness: 2
             }
           ]
         },
