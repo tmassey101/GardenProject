@@ -98,8 +98,11 @@ def index():
     lastTemp = plotTemp[-1]
     lastMoist = plotMoisture[-1]
     waterings = mldf.index[mldf['watering'] == 1]
-    latestWater = waterings.to_list()[-1]
-    
+    try:
+        latestWater = waterings.to_list()[-1]
+    except: 
+        latestWater = "2020-01-01 00:00:00"
+        print(waterings)
     
     ### Set desired average moisture level to re-water
     watering_point = 500
@@ -115,7 +118,11 @@ def index():
     linMoistureCoef = float(linearModel.coef_)
     linMoistureIntercept = linearModel.intercept_
    
-    hr_pred = (watering_point - linMoistureIntercept) / linMoistureIntercept
+    if linMoistureIntercept > 0:
+        hr_pred = (watering_point - linMoistureIntercept) / linMoistureIntercept
+    else:
+        hr_pred = 100
+    
     day_pred = hr_pred / 24
     
     moistureTrend = []
