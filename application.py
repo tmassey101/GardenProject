@@ -30,6 +30,8 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 insp = reflection.Inspector.from_engine(engine)
+
+print("Connected to:")
 print(insp.get_table_names())
 
 
@@ -51,48 +53,58 @@ def index():
     # Create pivoted dataframe for each variable
     df = pd.DataFrame(mlQuery, columns=['CreatedHr', 'AvgValue', 'Type'])
     mldf = df.pivot(index='CreatedHr', columns='Type', values='AvgValue')
-    mldf['CreatedHr'] = mldf.index
     mldf['watering'] = mldf['watering'].fillna(0)
-
+    
+    
     # Categorical True/False column for watering
     wateredTimes = mldf.loc[mldf['watering'] == 1]
     wateredTimes = wateredTimes.index
-
+    
     mldf['mostRecentWater'] = wateredTimes.searchsorted(value = mldf.index) - 1
-    mldf[mldf['mostRecentWater']< 0 ] = 0
+    mldf['mostRecentWater'][mldf['mostRecentWater'] < 0 ]= 0
+
     mldf['mostRecentWater'] = wateredTimes.values[mldf['mostRecentWater']]
     mldf['wateringElapsed']= (mldf.index - mldf['mostRecentWater']).astype('timedelta64[h]')
 
     # Calculate rolling average moisture level
     periods = 4
     mldf['Prev4Hrs'] =  mldf['moisture'].rolling(min_periods=1, window=periods).mean()
+   
+    # Remove first line (zeros due to historical calc)
+    mldf = mldf.iloc[1:]
 
+    ### Create Historical Variables for Plotting
     mldf = mldf.dropna()
+    
 
+    plotTemp = floatList(mldf['temp'])
+    plotMoisture = floatList(mldf['moisture']) 
+    plotWatering = floatList(mldf['watering'])
+    
+    
+    
+    labels = mldf['temp'].index.values
+    labels = [str(i) for i in labels]
+
+    
     # Compute Correlation for Moisture Level
 
+    
     x_train = mldf['moisture']
     y_train = mldf[['temp','watering','wateringElapsed','Prev4Hrs']]
 
+    
     model = LinearRegression().fit(y_train,x_train)
     print("Model Coefs = ", model.coef_)
     print("Model Interc = ", model.intercept_)
 
     y_pred = model.predict(y_train)
     mldf['moisturePred'] = y_pred
-
-    # Remove first line (zeros due to historical calc)
-    mldf = mldf.iloc[1:]
-
-    ### Create Historical Variables for Plotting
-    print(mldf.columns)
-    plotTemp = floatList(mldf['temp'])
-    plotMoisture = floatList(mldf['moisture']) 
-    plotWatering = floatList(mldf['watering'])
     plotMoisturePred = floatList(mldf['moisturePred'])
     
-    labels = mldf['CreatedHr'].to_list()
-    labels = [str(i) for i in labels]
+     
+
+    
 
     # Latest Metrics for dashboard
     lastTemp = plotTemp[-1]
@@ -101,12 +113,14 @@ def index():
     try:
         latestWater = waterings.to_list()[-1]
     except: 
-        latestWater = "2020-01-01 00:00:00"
-        print(waterings)
+        latestWater = "n/a"
+
     
     ### Set desired average moisture level to re-water
     watering_point = 500
+    day_pred = 10
 
+    
     ### Calculate linear moisture trend and rewater point
     TrendDays = 3
     Moisture3d = plotMoisture
@@ -118,18 +132,25 @@ def index():
     linMoistureCoef = float(linearModel.coef_)
     linMoistureIntercept = linearModel.intercept_
    
+    print(linMoistureIntercept, linMoistureCoef)
+
     if linMoistureIntercept > 0:
-        hr_pred = (watering_point - linMoistureIntercept) / linMoistureIntercept
+        hr_pred = (watering_point - linMoistureIntercept) / linMoistureCoef
     else:
-        hr_pred = 100
+        hr_pred = 1000
     
     day_pred = hr_pred / 24
+
+    print(hr_pred)
+    print(day_pred)
     
     moistureTrend = []
+    
     for i in np.arange(0,len(Moisture3d)):
         moistureTrend.append( (i * linMoistureCoef) + linMoistureIntercept)
+    
 
-    return render_template('index.html', latestWater=latestWater, lastTemp=lastTemp, lastMoist=lastMoist, plotTemp=plotTemp, plotMoisture=plotMoisture, plotWatering=plotWatering, plotMoisturePred=plotMoisturePred, labels=labels, chartType=chartType, title=title, day_pred=day_pred, moistureTrend=moistureTrend)
+    return render_template('index.html', latestWater=latestWater, lastTemp=lastTemp, lastMoist=lastMoist, plotTemp=plotTemp, plotMoisture=plotMoisture, plotWatering=plotWatering, labels=labels, chartType=chartType, title=title, day_pred=day_pred, moistureTrend=moistureTrend, plotMoisturePred=plotMoisturePred)
 
 
 @app.route("/insert/<value>", methods=["GET", "POST"])
