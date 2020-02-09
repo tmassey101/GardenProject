@@ -79,7 +79,7 @@ def index():
 
     plotTemp = floatList(mldf['temp'])
     plotMoisture = floatList(mldf['moisture']) 
-    plotWatering = floatList(mldf['watering'])
+    plotWatering = floatList(mldf['watering']*1000)
     
     
     
@@ -131,8 +131,6 @@ def index():
     linearModel = LinearRegression().fit(x, y)
     linMoistureCoef = float(linearModel.coef_)
     linMoistureIntercept = linearModel.intercept_
-   
-    print(linMoistureIntercept, linMoistureCoef)
 
     if linMoistureIntercept > 0:
         hr_pred = (watering_point - linMoistureIntercept) / linMoistureCoef
@@ -140,15 +138,11 @@ def index():
         hr_pred = 1000
     
     day_pred = hr_pred / 24
-
-    print(hr_pred)
-    print(day_pred)
     
     moistureTrend = []
     
     for i in np.arange(0,len(Moisture3d)):
         moistureTrend.append( (i * linMoistureCoef) + linMoistureIntercept)
-    
 
     return render_template('index.html', latestWater=latestWater, lastTemp=lastTemp, lastMoist=lastMoist, plotTemp=plotTemp, plotMoisture=plotMoisture, plotWatering=plotWatering, labels=labels, chartType=chartType, title=title, day_pred=day_pred, moistureTrend=moistureTrend, plotMoisturePred=plotMoisturePred)
 
@@ -287,7 +281,7 @@ def predictive():
 
     mldf['mostRecentWater'] = wateredTimes.searchsorted(value = mldf.index) - 1
     mldf['mostRecentWater'][mldf['mostRecentWater'] < 0 ]= 0
-    
+
     mldf['mostRecentWater'] = wateredTimes.values[mldf['mostRecentWater']]
     mldf['wateringElapsed']= (mldf.index - mldf['mostRecentWater']).astype('timedelta64[h]')
 
@@ -349,7 +343,11 @@ def predictive():
     linMoistureCoef = float(linearModel.coef_)
     linMoistureIntercept = linearModel.intercept_
    
-    hr_pred = (watering_point - linMoistureIntercept) / linMoistureIntercept
+    if linMoistureIntercept > 0:
+        hr_pred = (watering_point - linMoistureIntercept) / linMoistureCoef
+    else:
+        hr_pred = 1000
+    
     day_pred = hr_pred / 24
     
     moistureTrend = []
