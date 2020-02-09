@@ -286,7 +286,8 @@ def predictive():
     wateredTimes = wateredTimes.index
 
     mldf['mostRecentWater'] = wateredTimes.searchsorted(value = mldf.index) - 1
-    mldf[mldf['mostRecentWater']< 0 ] = 0
+    mldf['mostRecentWater'][mldf['mostRecentWater'] < 0 ]= 0
+    
     mldf['mostRecentWater'] = wateredTimes.values[mldf['mostRecentWater']]
     mldf['wateringElapsed']= (mldf.index - mldf['mostRecentWater']).astype('timedelta64[h]')
 
