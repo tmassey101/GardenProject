@@ -93,23 +93,23 @@ def index():
     x_train = mldf['moisture']
     y_train = mldf[['temp','watering','wateringElapsed','Prev4Hrs']]
 
-    
-    model = LinearRegression().fit(y_train,x_train)
-    print("Model Coefs = ", model.coef_)
-    print("Model Interc = ", model.intercept_)
+    try: 
+        model = LinearRegression().fit(y_train,x_train)
+        print("Model Coefs = ", model.coef_)
+        print("Model Interc = ", model.intercept_)
+        y_pred = model.predict(y_train)
+        mldf['moisturePred'] = y_pred
 
-    y_pred = model.predict(y_train)
-    mldf['moisturePred'] = y_pred
+    except:
+        mldf['moisturePred'] = 0
+
     plotMoisturePred = floatList(mldf['moisturePred'])
-    
-     
-
-    
 
     # Latest Metrics for dashboard
     lastTemp = plotTemp[-1]
     lastMoist = plotMoisture[-1]
     waterings = mldf.index[mldf['watering'] == 1]
+
     try:
         latestWater = waterings.to_list()[-1]
     except: 
@@ -296,12 +296,21 @@ def predictive():
     x_train = mldf['moisture']
     y_train = mldf[['temp','watering','wateringElapsed','Prev4Hrs']]
 
-    model = LinearRegression().fit(y_train,x_train)
-    print("Model Coefs = ", model.coef_)
-    print("Model Interc = ", model.intercept_)
+    try: 
+        model = LinearRegression().fit(y_train,x_train)
+        print("Model Coefs = ", model.coef_)
+        print("Model Interc = ", model.intercept_)
+        y_pred = model.predict(y_train)
+        mldf['moisturePred'] = y_pred
 
-    y_pred = model.predict(y_train)
-    mldf['moisturePred'] = y_pred
+    except:
+        mldf['moisturePred'] = 0 
+
+    plotMoisturePred = floatList(mldf['moisturePred'])
+
+    
+
+    
 
     # Remove first line (zeros due to historical calc)
     mldf = mldf.iloc[1:]
