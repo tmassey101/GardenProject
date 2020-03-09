@@ -53,8 +53,11 @@ def index():
     # Create pivoted dataframe for each variable
     df = pd.DataFrame(mlQuery, columns=['CreatedHr', 'AvgValue', 'Type'])
     mldf = df.pivot(index='CreatedHr', columns='Type', values='AvgValue')
-    mldf['watering'] = mldf['watering'].fillna(0)
+    try:
+        mldf['watering'] = mldf['watering'].fillna(0)
     
+    except:
+        mldf['watering'] = 0
     
     # Categorical True/False column for watering
     wateredTimes = mldf.loc[mldf['watering'] == 1]
@@ -110,8 +113,13 @@ def index():
     plotMoisturePred = floatList(mldf['moisturePred'])
 
     # Latest Metrics for dashboard
-    lastTemp = plotTemp[-1]
-    lastMoist = plotMoisture[-1]
+    try:
+        lastTemp = plotTemp[-1]
+        lastMoist = plotMoisture[-1]
+
+    except:
+        lastMoist = 0
+        lastTemp = 0
     waterings = mldf.index[mldf['watering'] == 1]
 
     try:
@@ -132,13 +140,13 @@ def index():
     y = np.asarray(Moisture3d)
     x = np.arange(len(Moisture3d)).reshape((-1,1))
 
-    linearModel = LinearRegression().fit(x, y)
-    linMoistureCoef = float(linearModel.coef_)
-    linMoistureIntercept = linearModel.intercept_
-
-    if linMoistureIntercept > 0:
+    try:
+        linearModel = LinearRegression().fit(x, y)
+        linMoistureCoef = float(linearModel.coef_)
+        linMoistureIntercept = linearModel.intercept_
         hr_pred = (watering_point - linMoistureIntercept) / linMoistureCoef
-    else:
+        
+    except:
         hr_pred = 1000
     
     day_pred = hr_pred / 24
