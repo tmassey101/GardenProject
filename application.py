@@ -252,10 +252,10 @@ def dailyChartBy5d():
 
     return render_template('charttest.html', labels=labels, values=values, chartType=chartType, measuretype=measuretype, title=title)
 
-@app.route("/insertall/<deviceid>/<sensorid>/<measuretype>/<value>", methods=["GET", "POST"])
-def insertall(deviceid, sensorid, measuretype, value):
+@app.route("/insertall/<deviceid>/<sensorid>/<measuretype>/<value>/<created>", methods=["GET", "POST"])
+def insertall(deviceid, sensorid, measuretype, value, created):
 
-    query = f"INSERT INTO sensorinputs (deviceid, sensorid, created, value, measuretype) VALUES ({deviceid}, {sensorid}, now(), {value}, '{measuretype}');"
+    query = f"INSERT INTO sensorinputs (deviceid, sensorid, timestamp, value, measuretype, created) VALUES ({deviceid}, {sensorid}, now(), {value}, '{measuretype}', '{created}');"
     insert = db.execute(query)
     db.commit()
 
