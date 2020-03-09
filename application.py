@@ -60,11 +60,15 @@ def index():
     wateredTimes = mldf.loc[mldf['watering'] == 1]
     wateredTimes = wateredTimes.index
     
-    mldf['mostRecentWater'] = wateredTimes.searchsorted(value = mldf.index) - 1
-    mldf['mostRecentWater'][mldf['mostRecentWater'] < 0 ]= 0
+    try: 
+        mldf['mostRecentWater'] = wateredTimes.searchsorted(value = mldf.index) - 1
+        mldf['mostRecentWater'][mldf['mostRecentWater'] < 0 ]= 0
 
-    mldf['mostRecentWater'] = wateredTimes.values[mldf['mostRecentWater']]
-    mldf['wateringElapsed']= (mldf.index - mldf['mostRecentWater']).astype('timedelta64[h]')
+        mldf['mostRecentWater'] = wateredTimes.values[mldf['mostRecentWater']]
+        mldf['wateringElapsed']= (mldf.index - mldf['mostRecentWater']).astype('timedelta64[h]')
+
+    except:
+        mldf['wateringElapsed'] = 0
 
     # Calculate rolling average moisture level
     periods = 4
